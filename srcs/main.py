@@ -7,7 +7,7 @@ def zscore(x):
 	return vfunc(x)
 
 if __name__=="__main__":
-	data = np.array(pandas.read_csv('data.csv'))
+	data = np.array(pandas.read_csv('../assets/data.csv'))
 	X = data[:,0].reshape(-1, 1)
 	mean_data, std_data = np.mean(X), np.std(X)
 	Y = data[:,1].reshape(-1, 1)

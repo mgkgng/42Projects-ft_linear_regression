@@ -13,8 +13,8 @@ class LRModel:
 
 	def trainModel(self, x, y):
 		for _ in range(self.max_iter):
-			grad = self.loss(x, y)
-			self.thetas = self.thetas - grad
+			self.thetas -= self.loss(x, y)
+		self.plot(x, y)
 
 	def loss(self, x, y):
 		x_prime = np.insert(x, 0, 1, 1)
@@ -24,5 +24,8 @@ class LRModel:
 
 	def plot(self, x, y):
 		plt.plot(x, y, 'o')
-		plt.plot(x, self.predict(x))
+		plt.plot(x, np.insert(x, 0, 1, 1) @ self.thetas)
+		plt.title("Please quit this plot in order to estimate the price 😉")
+		plt.xlabel("Mileage(km)")
+		plt.ylabel("Price")
 		plt.show()
