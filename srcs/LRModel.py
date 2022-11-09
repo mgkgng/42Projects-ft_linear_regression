@@ -16,16 +16,20 @@ class LRModel:
 			self.thetas -= self.loss(x, y)
 		self.plot(x, y)
 
+	def calculatePrecision(self, x, y):
+		vfunc = np.vectorize(lambda x : self.estimatePrice(x))
+		sumX, sumY = np.sum(vfunc(x)), np.sum(y)
+		return round((1 - abs((sumY - sumX) / sumY)) * 100)
+
 	def loss(self, x, y):
 		x_prime = np.insert(x, 0, 1, 1)
-		y_hat = x_prime @ self.thetas
-		cost = y_hat - y
+		cost = x_prime @ self.thetas - y
 		return (x_prime.T @ cost) / (x_prime.shape[0] * 2)
 
 	def plot(self, x, y):
 		plt.plot(x, y, 'o')
 		plt.plot(x, np.insert(x, 0, 1, 1) @ self.thetas)
 		plt.title("Please quit this plot in order to estimate the price 😉")
-		plt.xlabel("Mileage(km)")
+		plt.xlabel("Standard deviation for Mileage(km)")
 		plt.ylabel("Price")
 		plt.show()
