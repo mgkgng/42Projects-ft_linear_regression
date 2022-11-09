@@ -24,4 +24,5 @@ if __name__=="__main__":
 		else:
 			mileage = int(s)
 			std_val = (mileage - mean_data) / std_data
-			print("The estimated price is ${}".format(lr.estimatePrice(std_val)))
+			estimation = lr.estimatePrice(std_val)
+			print(f"The estimated price is ${estimation if estimation > 0 else 0}." + (" Sorry!" if estimation <= 0 else ""))
