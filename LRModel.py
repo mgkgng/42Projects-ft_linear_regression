@@ -3,17 +3,18 @@ import matplotlib.pyplot as plt
 
 class LRModel:
 	def __init__(self, alpha=0.001, max_iter=100000):
-		self.weight = -2
-		self.bias = 500000
+		self.thetas = np.array([[0.], [0.]])
 		self.alpha = alpha
 		self.max_iter = max_iter
 
 	def estimatePrice(self, mileage):
-		return self.weight * mileage + self.bias
+		return self.thetas[1] * mileage + self.thetas[0]
 
 	def trainModel(self, x, y):
 		for _ in range(self.max_iter):
-			self.weight, self.bias = self.step_gradient(x, y)
+			grad = self.loss(x, y)
+			self.thetas = self.thetas - grad
+		
 
 	def cost_func(self, x, y):
 		cost = self.predict(x) - y
@@ -25,15 +26,16 @@ class LRModel:
 
 	def predict(self, x):
 		x_prime = np.insert(x, 0, 1, 1)
-		return  np.insert(x, 0, 1, 1) @ np.array([[self.bias], [self.weight]])
+		return  np.insert(x, 0, 1, 1) @ self.thetas
 
 	def loss_elem(self, x, y):
 		pass
 
 	def loss(self, x, y):
 		x_prime = np.insert(x, 0, 1, 1)
-		print(x_prime.shape)
-		return x_prime.T @ (x_prime @ np.array([[self.bias], [self.weight]])) / (x_prime.shape[0] * 2)
+		y_hat = x_prime @ self.thetas
+		cost = y_hat - y
+		return (x_prime.T @ cost) / (x_prime.shape[0] * 2)
 
 	def plot(self, x, y):
 		plt.plot(x, y, 'o')
